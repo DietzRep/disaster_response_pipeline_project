@@ -1,6 +1,6 @@
 import spacy
 import pandas as pd
-from disaster_response_pipeline_project.data.column_utils import MESSAGES_COLUMNS, MESSAGE_COLUMN, ENTITY_COLUMN, ENTITY_LABEL_COLUMN, IDENTIFIER_COLUMN
+from data.column_utils import MESSAGES_COLUMNS, MESSAGE_COLUMN, ENTITY_COLUMN, ENTITY_LABEL_COLUMN, IDENTIFIER_COLUMN
 
 
 class EntityExtractor:

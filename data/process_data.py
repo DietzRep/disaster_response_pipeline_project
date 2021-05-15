@@ -3,43 +3,10 @@ import pandas as pd
 import numpy as np
 import argparse
 import logging
-from disaster_response_pipeline_project.data.entity_extractor import EntityExtractor
+from data.entity_extractor import EntityExtractor
 from sqlalchemy import create_engine
-from googletrans import Translator
-from disaster_response_pipeline_project.data.column_utils import CATEGORIES_COLUMNS, LANGUAGE_COLUMNS, MESSAGES_COLUMNS, IDENTIFIER_COLUMN, CATEGORIES_RAW, ORIGINAL_COLUMN
+from data.column_utils import CATEGORIES_COLUMNS, MESSAGES_COLUMNS, IDENTIFIER_COLUMN, CATEGORIES_RAW
 logging.basicConfig(level=logging.INFO)
-
-
-
-def load_language(language_path: str) -> pd.DataFrame:
-    language_filename = os.path.join(language_path, "language_mapping.csv")
-    if os.path.isfile(language_filename):
-        language_df = pd.read_csv(language_filename)
-        assert all(x in language_df.columns for x in LANGUAGE_COLUMNS)
-    else:
-        raise ValueError("The path: {} is incorrect".format(language_path))
-
-def extract_language(disaster_df: pd.DataFrame) -> pd.DataFrame:
-    """
-    extract the language of the original text.
-    :param disaster_df: pd.DataFrame
-            Data frame with original texts
-    :return: pd.DataFrame
-        Data frame with abbreviation of text language
-    """
-    assert isinstance(disaster_df, pd.DataFrame)
-    assert all(required_column in disaster_df.columns for required_column in MESSAGES_COLUMNS)
-    translator = Translator()
-    lang = []
-    ids = []
-
-    for idx, row in disaster_df.iterrows():
-        lang.append(translator.detect(row[ORIGINAL_COLUMN]).lang)
-        ids.append(row[IDENTIFIER_COLUMN])
-    data_frame = pd.DataFrame({IDENTIFIER_COLUMN: ids, "language_mapping": lang})
-    data_frame["language_mapping"] = data_frame["language_mapping"].apply(lambda x:  "ht" if "ht" in x else x)
-    return data_frame
-
 
 
 def load_data(messages_filepath: str, categories_filepath :str) -> pd.DataFrame:
@@ -117,6 +84,13 @@ def save_data_to_db(df: pd.DataFrame, entities_dataframe: pd.DataFrame,  databas
     entities_dataframe.to_sql("text_entities", engine, index=False, if_exists="replace")
 
 def main(args):
+    """
+    Run the preprocessing pipeline for the provided csv. First merge messages and categories. Then extract entities of the messages
+    and the end save the data to the data base.
+
+    :param args
+        parameter for the function. Have to include file path to messages, categories and the path to save the data base to.
+    """
     messages_filepath = args.messages_filepath
     categories_filepath = args.categories_filepath
     database_filepath = args.database_filepath
@@ -142,12 +116,8 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='ETL for disaster response pipeline.')
     parser.add_argument("-mp", "--messages_filepath", required=True, type= str, help="filepath for messages.csv." )
-    parser.add_argument("-cp", "--categories_filepath", required=True, type = str, help = "filepath for categories.csv.")
+    parser.add_argument("-cp", "--categories_filepath", required=True, type = str, help = "filepath for categories.csv with labels for each message.")
     parser.add_argument("-dp", "--database_filepath", required=True, type=str, help = "filename of sqlite data base.")
-    parser.add_argument("-lp", "--language_filepath", required=True, type =str, help="filename of language filepath")
-    parser.add_argument("-lm", "--language_mode", default="extract", choices=["load", "extract"],
-                        help="load to load a csv with language mapping extract to use google to detect the language")
-
     args = parser.parse_args()
 
     main(args)

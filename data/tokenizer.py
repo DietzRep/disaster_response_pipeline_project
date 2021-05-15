@@ -1,10 +1,12 @@
+import nltk
 from nltk import word_tokenize
 from nltk import WordNetLemmatizer
 from nltk.corpus import stopwords
+nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger', "stopwords"])
 
 def tokenize(text):
     """
-    Tokenzie and lemmatize text tokens.
+    Tokenize and lemmatize a text into token. ALso Removes english stopwords.
     :param text: str
         Text string object.
     :return: list

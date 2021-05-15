@@ -6,9 +6,9 @@ from flask import Flask
 from flask import render_template, request, jsonify
 from plotly.graph_objs import Bar
 from sqlalchemy import create_engine
-from disaster_response_pipeline_project.data.column_utils import MESSAGES_COLUMNS, IGNORE_LABELS
-from disaster_response_pipeline_project.models.model_factory import load_model
-from disaster_response_pipeline_project.data.entity_extractor import EntityExtractor
+from data.column_utils import MESSAGES_COLUMNS, IGNORE_LABELS
+from models.model_factory import load_model
+from data.entity_extractor import EntityExtractor
 import logging
 import datetime
 

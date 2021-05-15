@@ -1,15 +1,14 @@
-import nltk
 from sqlalchemy import create_engine
 import os
-from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.model_selection import train_test_split
 import pandas as pd
 import pickle
 from sklearn.metrics import classification_report
-from disaster_response_pipeline_project.models.model_factory import  build_model
+from models.model_factory import  build_model
 import joblib
 import argparse
 import logging
-from disaster_response_pipeline_project.data.column_utils import TRAININGS_COLUMNS, MESSAGES_COLUMNS, IGNORE_LABELS
+from data.column_utils import TRAININGS_COLUMNS, MESSAGES_COLUMNS, IGNORE_LABELS
 logging.basicConfig(level=logging.INFO)
 
 
@@ -122,5 +121,4 @@ if __name__ == '__main__':
     parser.add_argument("-sr", "--save_results", required=True, type=str, help="save results of the model evaluation", choices=["yes", "no"])
     parser.add_argument("--model_name", type= str, help="Name of the model to train", default="random_forest")
     args = parser.parse_args()
-    nltk.download(['punkt', 'wordnet', 'averaged_perceptron_tagger', "stopwords"])
     main(args)

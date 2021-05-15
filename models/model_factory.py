@@ -1,6 +1,6 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.multioutput import MultiOutputClassifier
-from disaster_response_pipeline_project.data.tokenizer import  tokenize
+from data.tokenizer import  tokenize
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.model_selection import GridSearchCV
