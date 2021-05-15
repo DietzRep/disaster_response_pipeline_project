@@ -36,7 +36,7 @@ preprocess them and creates a [sql lite](https://www.sqlite.org/index.html) data
 5. Access the application with the url: http://0.0.0.0:3001/
 
 
-## Future Work: 
+## Further Work: 
 
 1) Add a [MongoDb](https://www.mongodb.com/) that saves send query messages and their predictions in order to label them later and 
    keep track of requested informations.
