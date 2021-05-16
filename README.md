@@ -11,35 +11,31 @@ preprocess them and creates a [sql lite](https://www.sqlite.org/index.html) data
 - The third part is a web-app. The web app is based on flask. The app includes plotly visualisations of the training data
     and the possibility to query the trained model with own requests. 
 
+Link to [Github](https://github.com/DietzRep/disaster_response_pipeline_project).
 
 ## Start the web application:
 1. Setup anaconda environment: 
     Download [anaconda](https://www.anaconda.com/) and run:
     `conda env create -f environment.yml`
-    
-
-
-2. Preprocess data, extract entities in texts and create data base:
+2. Setup Pythonpath - make sure that python path is the project directory:
+        `set PYTHONPATH=.` on windows or `export PYTHONPATH=.` in linux )
         
- (make sure that phyton path is the project directory `set PYTHONPATH=.` in windows or `export PYTHONPATH=.` in linux )
+3. Preprocess data, extract entities in texts and create data base:
+            
+        `python data/process_data.py --messages_filepath <file path to messages.csv with texts> 
+                --categories_filepath <file to categories.csv with lables for each message> 
+                    --database_filepath <file path for reult db>`
         
-        
-   
-    `python data/process_data.py --messages_filepath <file path to messages.csv with texts> 
-            --categories_filepath <file to categories.csv with lables for each message> 
-                --database_filepath <file path for reult db>`
-        
-
 3. Train the ML model and save the model as pickle:
 
         `python models/train_classifier.py --model_filepath <Path to save the trained model> --database_filepath <file path to training data> 
                        --save_results <whether to save prediction results>  --model_name <name of the model. Has to be difined in the model_factory.py >
                         `
 
-4. Run the following command in the app's directory (make sure that app directory is the python path `set PYTHONPATH=.`) to run your web app.
-    `python run.py`
+4. Run the following command to run the web application
+    `python app/run.py`
 
-5. Access the application with the url: http://0.0.0.0:3001/
+5. Access the application with the url: http://0.0.0.0:3001/ or http://localhost:3001/
 
 
 ## Further Work: 

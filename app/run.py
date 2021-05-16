@@ -15,14 +15,14 @@ import datetime
 app = Flask(__name__)
 
 # load data
-engine = create_engine('sqlite:///../data/test.db')
+engine = create_engine('sqlite:///data/test.db')
 data = pd.read_sql_query('SELECT name from sqlite_master where type= "table";', engine)
 df = pd.read_sql_table('disaster_response', engine)
 entity_extractor = EntityExtractor()
 entities = pd.read_sql_table('text_entities', engine)
 gpe_entities = entities[entities["labels"] == "GPE"].copy()
 # load model
-model = load_model("../models/", "random_forest.pkl")
+model = load_model("models/", "random_forest.pkl")
 
 # index webpage displays cool visuals and receives user input text for model
 @app.route('/')
